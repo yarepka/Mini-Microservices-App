@@ -1,3 +1,11 @@
+/*
+  Notes on Async Communication
+  + Quert Service has zero dependencies on other service!
+  + Query Service will be extremely fast
+  - Data duplication
+  - Harder to understand
+ */
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -34,10 +42,23 @@ app.post('/events', (req, res) => {
   }
 
   if (type === 'CommentCreated') {
-    const { id, postId, content } = data;
+    const { id, postId, content, status } = data;
 
     const post = posts[postId];
-    post.comments.push({ id, content });
+    post.comments.push({ id, content, status });
+  }
+
+  if (type === 'CommentUpdated') {
+    const { id, content, postId, status } = data;
+
+    const post = posts[postId];
+    const comment = post.comments
+      .find(comment => {
+        return comment.id === id
+      });
+
+    comment.status = status;
+    comment.content = content;
   }
 
   console.log(posts);
