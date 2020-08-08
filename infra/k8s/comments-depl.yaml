@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: comments-depl
+spec: 
+  # number of pods we want to create
+  replicas: 1
+  # take a look at all Pods were created
+  selector: 
+    # find Pods with the label app:comments
+    matchLabels:
+      app: comments
+  # here we specifying the configuration of a Pod we want
+  # this deployment to create
+  template:
+    metadata:
+      # we want Pod to have the label app:comments
+      labels:
+        app: comments
+    # describing configuration options of the Pad we 
+    # are about to create
+    spec:
+      # array of containers
+      containers:
+        - name: comments
+          image: yarepka/comments:latest
+          imagePullPolicy: Always
+          
+# creating ClusterIP Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # service name
+  name: comments-srv
+spec:
+  # service type ClusterIP (if not specified ClusterIP is default)
+  type: ClusterIP
+  selector:
+    # try to find all pods with label app:comments
+    app: comments
+  ports:
+    - name: comments
+      protocol: TCP
+      # node service port
+      port: 4001
+      # pod port
+      targetPort: 4001

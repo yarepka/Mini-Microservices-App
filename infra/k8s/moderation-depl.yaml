@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: moderation-depl
+spec: 
+  # number of pods we want to create
+  replicas: 1
+  # take a look at all Pods were created
+  selector: 
+    # find Pods with the label app:moderation
+    matchLabels:
+      app: moderation
+  # here we specifying the configuration of a Pod we want
+  # this deployment to create
+  template:
+    metadata:
+      # we want Pod to have the label app:moderation
+      labels:
+        app: moderation
+    # describing configuration options of the Pad we 
+    # are about to create
+    spec:
+      # array of containers
+      containers:
+        - name: moderation
+          image: yarepka/moderation:latest
+          imagePullPolicy: Always
+          
+# creating ClusterIP Service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  # service name
+  name: moderation-srv
+spec:
+  # service type ClusterIP (if not specified ClusterIP is default)
+  type: ClusterIP
+  selector:
+    # try to find all pods with label app:moderation
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      # node service port
+      port: 4003
+      # pod port
+      targetPort: 4003
