@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: posts-depl
+spec: 
+  # number of pods we want to create
+  replicas: 1
+  # take a look at all Pods were created
+  selector: 
+    # find Pods with the label app:posts
+    matchLabels:
+      app: posts
+  # here we specifying the configuration of a Pod we want
+  # this deployment to create
+  template:
+    metadata:
+      # we want Pod to have the label app:posts
+      labels:
+        app: posts
+    # describing configuration options of the Pad we 
+    # are about to create
+    spec:
+      # array of containers
+      containers:
+        - name: posts
+          image: yarepka/posts:latest
+          imagePullPolicy: Always
