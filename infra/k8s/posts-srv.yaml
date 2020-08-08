@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  # service name (must be uniqe per service)
+  name: posts-srv
+spec:
+  # service type
+  type: NodePort
+  selector:
+    # try to find all pods with label app:posts
+    app: posts
+  ports:
+    # name can be anything
+    - name: posts
+      protocol: TCP
+      # node service port
+      port: 4000
+      # pod port
+      targetPort: 4000

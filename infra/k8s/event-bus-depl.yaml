@@ -1,48 +1,48 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata: 
-  name: posts-depl
+  name: event-bus-depl
 spec: 
   # number of pods we want to create
   replicas: 1
   # take a look at all Pods were created
   selector: 
-    # find Pods with the label app:posts
+    # find Pods with the label app:event-bus
     matchLabels:
-      app: posts
+      app: event-bus
   # here we specifying the configuration of a Pod we want
   # this deployment to create
   template:
     metadata:
-      # we want Pod to have the label app:posts
+      # we want Pod to have the label app:event-bus
       labels:
-        app: posts
+        app: event-bus
     # describing configuration options of the Pad we 
     # are about to create
     spec:
       # array of containers
       containers:
-        - name: posts
-          image: yarepka/posts:latest
+        - name: event-bus
+          image: yarepka/event-bus:latest
           imagePullPolicy: Always
-
-# creating clusterIP service
+          
+# creating ClusterIP Service
 ---
 apiVersion: v1
 kind: Service
 metadata:
   # service name
-  name: posts-clusterip-srv
+  name: event-bus-srv
 spec:
   # service type ClusterIP (if not specified ClusterIP is default)
   type: ClusterIP
   selector:
-    # try to find all pods with label app:posts
-    app: posts
+    # try to find all pods with label app:event-bus
+    app: event-bus
   ports:
-    - name: posts
+    - name: event-bus
       protocol: TCP
       # node service port
-      port: 4000
+      port: 4005
       # pod port
-      targetPort: 4000
+      targetPort: 4005
