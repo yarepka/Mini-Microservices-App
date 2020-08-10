@@ -1,0 +1,65 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: yarepka/client
+      # directory
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          # - if change .js files, skaffold will try to
+          # put changed file directly into the pod
+          # - if we ever make a change to anything
+          # inside client directory that is not matched 
+          # up by this src rule, then skaffold will try
+          # to rebuild the entire image
+          - src: 'src/**/*.js'
+            dest: .
+    - image: yarepka/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: yarepka/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: yarepka/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: yarepka/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: yarepka/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .

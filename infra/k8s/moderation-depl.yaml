@@ -24,7 +24,6 @@ spec:
       containers:
         - name: moderation
           image: yarepka/moderation:latest
-          imagePullPolicy: Always
           
 # creating ClusterIP Service
 ---

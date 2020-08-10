@@ -24,7 +24,6 @@ spec:
       containers:
         - name: client
           image: yarepka/client:latest
-          imagePullPolicy: Always
           
 # creating ClusterIP Service
 ---

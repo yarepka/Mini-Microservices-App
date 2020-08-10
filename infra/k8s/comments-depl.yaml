@@ -24,7 +24,6 @@ spec:
       containers:
         - name: comments
           image: yarepka/comments:latest
-          imagePullPolicy: Always
           
 # creating ClusterIP Service
 ---

@@ -24,7 +24,6 @@ spec:
       containers:
         - name: event-bus
           image: yarepka/event-bus:latest
-          imagePullPolicy: Always
           
 # creating ClusterIP Service
 ---

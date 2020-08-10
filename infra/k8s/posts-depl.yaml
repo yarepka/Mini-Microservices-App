@@ -24,7 +24,6 @@ spec:
       containers:
         - name: posts
           image: yarepka/posts:latest
-          imagePullPolicy: Always
 
 # creating clusterIP service
 ---
